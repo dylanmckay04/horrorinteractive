@@ -13,7 +13,6 @@ def scroll_text(lines, delay=0.01):
             time.sleep(delay)
 
 # Player 
-
 class Player:
     def __init__(self, name):
         self.name = name
@@ -27,13 +26,12 @@ class Player:
             self.inventory.remove(item)
 
 # Doors, Chests, and Keys
-
 class Door:
     def __init__(self, num, locked=True):
         self.num = num
         self.locked = locked
 
-class KeyItem:
+class Key:
     def __init__(self, name):
         self.name = name
 
@@ -43,13 +41,12 @@ class Chest:
         self.locked = locked
 
 # Welcome message & story/character creation
-scroll_text("Welcome to the Interactive Horror Experience!\n")
+scroll_text("Welcome to Adventure Interactive!\n")
 input("Press Enter to continue: ")
-     #       Add prompt to select genre here
 player = input("Choose a name for your character: ")
 
 # Run Game
-def startGame(genre):
+def start_game(genre):
     # Horror story main function
     def horror_story_main():
         horror_lines_main1 = [
@@ -68,16 +65,16 @@ def startGame(genre):
 
         # Lines for look direction choices
         horror_lines_main2 = [
-                    "\nYou look down the road to the left and see it leads towards a seemingly endless stretch of houses,\n",
-                    "not a single light can be seen coming from any of them.",
-                    "They look as though they were just recently built.",
-                    "Streetlights line the street as well, though their bulbs glow dimly,\n",
-                    "almost as if they were dying."]
+            "\nYou look down the road to the left and see it leads towards a seemingly endless stretch of houses,\n",
+            "not a single light can be seen coming from any of them.",
+            "They look as though they were just recently built.",
+            "Streetlights line the street as well, though their bulbs glow dimly,\n",
+            "almost as if they were dying."]
         horror_lines_main3 = [
-                    "\nYou turn your head to look down the road to your right.",
-                    "This path is completely obscured by evergreen trees on both sides.",
-                    "The only light illuminating the path is the streaks of moonlight breaking through the canopy.",
-                    "You cannot tell where it leads, but a strange curiosity builds as the trees sway."]
+            "\nYou turn your head to look down the road to your right.",
+            "This path is completely obscured by evergreen trees on both sides.",
+            "The only light illuminating the path is the streaks of moonlight breaking through the canopy.",
+            "You cannot tell where it leads, but a strange curiosity builds as the trees sway."]
         
         while True:
             look_direction1 = input("Look to the left or to the right? (left/right): ") 
@@ -105,7 +102,7 @@ def startGame(genre):
         while True:
             go_direction = input("\nWhich direction do you go? (left/right): ")
 
-                                       # Left Path Story
+            # Left Path Story
             if go_direction == "Left" or go_direction == "left":
                 def horror_story_left():
                     horror_left_lines1 = [
@@ -119,8 +116,8 @@ def startGame(genre):
                         "You quickly power on your camera and look into the viewfinder.",
                         "You zoom into the window where you can see the blinds being bent back.",
                         "\nThe only thing you can make out is a bony finger poking through the gap."
-                        ]
-                    horror_left_lines2 = [      # Lines if player takes picture
+                    ]
+                    horror_left_lines2 = [      # Lines if player takes a picture
                         "\nYou focus the camera on the gap in the blinds and snap a photo.",
                         "\nThe flash lights up the exterior of the house for the briefest moment before\n",
                         "it is shrouded in darkness once again.",
@@ -130,16 +127,17 @@ def startGame(genre):
                         "\nThe screeching begins to multiply from all directions and\n",
                         "the sound of shattering glass fills the air.",
                         "\nTall, grey, lanky humanoid creatures burst from the windows of each house.",
-                        "Their bodies are grey almagamations of long-decayed flesh sewn together with oozing black tendrils.",
+                        "Their bodies are grey amalgamations of long-decayed flesh sewn together with oozing black tendrils.",
                         "Their faces look as though they have been sewn on as well..\n"
                         "\nIn a matter of seconds, a dozen or so of the Residents are on top of you."
                         "\nYou are torn apart.",
                         "\nYour new body prepares its new home.",
-                        "\nGame Over."]
+                        "\nGame Over."
+                    ]
                     horror_left_lines3 = [      # Lines if player runs away
                         "\nYou decide that this place is too strange to explore at night.",
                         "You begin running in the opposite direction back to where you started.",
-                        "You here a strange harmony of screams in the distance as you move further away.",
+                        "You hear a strange harmony of screams in the distance as you move further away.",
                         "\nThankfully, the screams do not get any closer, and the sounds of the crickets and cicadas\n",
                         "return to drone on as if nothing was ever wrong.",
                         "Your heart races as you quickly trace your path back towards the safety of your home.",
@@ -161,7 +159,8 @@ def startGame(genre):
                         "\nEvergreen Residents' Estates\n",
                         "\nBelow the text is a blurry image of one of the houses that lined the path.\n"
                         "\nYou have escaped?"
-                        "\nGame Over.",]
+                        "\nGame Over."
+                    ]
                     scroll_text(horror_left_lines1)
                     horror_left_decision = input("\nWhat do you do? (take picture/run away): ")
                     if horror_left_decision == "take picture":
@@ -170,13 +169,20 @@ def startGame(genre):
                         scroll_text(horror_left_lines3)
                 horror_story_left()
                 break
-                    # Right Path Story
+            # Right Path Story
             elif go_direction == "Right" or go_direction == "right":
-                    pass # Ghost makes player find key/item to escape?
-            
-    # Runs story creation function for genre
-    if genre == "Horror" or genre == "horror":
-        horror_story_main()
+                def horror_story_right():
+                    pass
+                horror_story_right()
+
+    # Run the appropriate genre-specific story
+    while True:
+        if genre == "Horror" or genre == "horror":
+            horror_story_main()
+            break
+        else:
+            print("Invalid genre selection. Please choose a valid genre.")
 
 # Start Game
-startGame("horror")
+genre = input("Choose a genre for your adventure (horror | crime | fantasy): ")
+start_game(genre)
