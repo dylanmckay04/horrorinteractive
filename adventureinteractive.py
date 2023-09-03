@@ -1,7 +1,6 @@
-# Used for scrolling text & random nums
+# Use for scrolling text
 import time
 import sys
-import random
 
 # Scrolling text function
 def scroll_text(lines, delay=0.03):
@@ -14,19 +13,12 @@ def scroll_text(lines, delay=0.03):
             time.sleep(delay)
 
 class Character:
-    def __init__(self, name, health=100):
+    def __init__(self, name):
         self.name = name
-        self.health = health
 
-    def attack(self, target, damage=20, crit=random.randint(1,4)):
-        self.target = target
-        if crit == 1:
-            damage *= 1.25
-        target.health -= damage
-        
 class Player(Character):
     def __init__(self, name):
-        super().__init__(name, health=100)
+        super().__init__(name)
         self.inventory = []
 
     def add_item(self, item):
@@ -36,29 +28,9 @@ class Player(Character):
         if item in self.inventory:
             self.inventory.remove(item)
 
-    def attack(self, target, damage=20, crit=random.randint(1,4)):
-        super().attack(target, damage, crit)
-    def heal(self, chance=random.randint(1,8), amount=20):
-        self.chance = chance
-        self.amount = amount
-        if chance >= 1 and chance <= 4:     # 50% chance hp + 20
-            self.health += amount
-        elif chance > 4 and chance <= 7:    # 37.5% chance hp + 30
-            self.amount += 10
-            self.health += self.amount
-        elif chance == 8:                   # 12.5% chance hp + 42.5
-            self.amount += 20
-            self.health += self.amount
-        else:
-            print("An unexpected error has occured when generating random int")
-
 class Enemy(Character):
-    def __init__(self, name, health=100):
-        super().__init__(name, health)
-
-    def attack(self, target, damage=25):
-        self.damage = damage
-        target.health -= damage
+    def __init__(self, name):
+        super().__init__(name)
 
 # Doors, Chests, and Keys
 
@@ -139,26 +111,48 @@ def startGame(genre):
         # Choose correct story for player direction
         while True:
             go_direction = input("\nWhich direction do you go? (left/right): ")
+
+                                       # Left Path Story
             if go_direction == "Left" or go_direction == "left":
-                            # Left Path Story
-                def horror_story_leftpath():
-                    horror_left_lines1 = [
-                        "\nYou begin walking down the road to the left.",
-                        "As you walk past the houses that line the path,\n",
-                        "you realize that every single house is completely identical to the last.",
-                        '\n"None of this makes any sense, why would they build these houses here?"\n',
-                        "You think to yourself as you stop in front of one of the houses to get a closer look.",
-                        "\n"
-                    ]
-                    scroll_text(horror_left_lines1)
-                horror_story_leftpath()
+                horror_left_lines1 = [
+                    "\nYou begin walking down the road to the left.",
+                    "As you walk past the houses that line the path,\n",
+                    "you realize that every single house is completely identical to the last.",
+                    '\n"None of this makes any sense, why would they build these houses here?"\n',
+                    "You think to yourself as you stop in front of one of the houses to get a closer look.",
+                    "\nAs you scan your eyes across the strange structure, you notice the blinds rustle slightly.",
+                    "The distance from the sidewalk to the window is too far to make out too many details.",
+                    "You quickly power on your camera and look into the viewfinder.",
+                    "You zoom into a single area in the window where you can see the blinds being bent back;\n",
+                    "\nIs someone(something?) watching you?."]
+                horror_left_lines2 = [      # Lines if player take picture
+                    "\nYou focus the camera on the gap in the blinds and snap a photo.",
+                    "\nThe flash lights up the exterior of the house for the briefest moment before\n",
+                    "it is shrouded in darkness once again.\n",
+                    "The moment the flash hits the window, the blinds pull back into place and\n",
+                    "an ear-splitting animalistic cry of pain bursts through the night air.",
+                    "\nYou start to step backwards to run, but it's too late.",
+                    "\nThe screeching begins to multiply from all directions and",
+                    "the sound of shattering glass fills the air.",
+                    "\nTall, grey, lanky humanoid creatures burst from the windows of each house",
+                    "Their bodies are grey almagamations of long-decayed flesh sewn together with oozing black tendrils.",
+                    "\nTheir faces look as though they have been sewn on as well.."
+                    "In a matter of seconds, a dozen or so of the Residents are on top you of you"
+                ]
+                horror_left_lines3 = [] # Lines if run away
+                scroll_text(horror_left_lines1)
+                horror_left_decision = input("\nWhat do you do? (take picture/run away): ")
+                if horror_left_decision == "take picture":
+                    scroll_text(horror_left_lines2) 
+                elif horror_left_decision == "run away":
+                    scroll_text(horror_left_lines3)
                 break
             elif go_direction == "Right" or go_direction == "right":
                     # Right Path Story
                 def horror_story_rightpath():
                     pass
                 horror_story_rightpath()
-        
+            
     # Runs story creation function for genre
     if genre == "Horror" or genre == "horror":
         horror_story()
