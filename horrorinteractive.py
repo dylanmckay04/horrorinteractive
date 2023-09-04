@@ -26,6 +26,9 @@ def play_again_prompt():
         start_game()
     else:
         scroll_text("\nThanks for playing.")
+        while True:
+            input("\nPress Enter to exit.")
+            break
 
 # Run Game
 def start_game():
