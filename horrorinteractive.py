@@ -3,7 +3,7 @@ import time
 import sys
 
 # Scrolling text function
-def scroll_text(lines, delay=0.01):
+def scroll_text(lines, delay=0.03):
     for line in lines:
         if line.endswith('.'):
             line = line + '\n'
@@ -12,43 +12,32 @@ def scroll_text(lines, delay=0.01):
             sys.stdout.flush()
             time.sleep(delay)
 
-# Player 
-class Player:
-    def __init__(self, name):
-        self.name = name
-        self.inventory = []
+#   Message for invalid inputs
+invalid_choice = "\nInvalid choice, please try again."
 
-    def add_item(self, item):
-        self.inventory.append(item)
-
-    def use_item(self, item):
-        if item in self.inventory:
-            self.inventory.remove(item)
-
-# Doors, Chests, and Keys
-class Door:
-    def __init__(self, num, locked=True):
-        self.num = num
-        self.locked = locked
-
-class Key:
-    def __init__(self, name):
-        self.name = name
-
-class Chest:
-    def __init__(self, *items, locked=True):
-        self.items = items
-        self.locked = locked
-
-# Welcome message & story/character creation
-scroll_text("Welcome to Adventure Interactive!\n")
+# Welcome message
+scroll_text("Welcome to Horror Interactive!\n")
 input("Press Enter to continue: ")
-player = input("Choose a name for your character: ")
+
+# Option to replay game
+def play_again_prompt():
+    replay_option = input("\nWould you like to play again? (y/n): ")
+    if replay_option.lower() == "y":
+        start_game()
+    else:
+        scroll_text("\nThanks for playing.")
 
 # Run Game
-def start_game(genre):
+def start_game():
     # Horror story main function
     def horror_story_main():
+        while True:
+            player = input("Choose a name for your character: ")
+            if player == '':
+                scroll_text("\nPlayer name cannot be blank.")
+            else:
+                break
+            
         horror_lines_main1 = [
             f"\nYou are {player}.",
             "\nYou live in Evergreen, a small town in Maine.",
@@ -78,39 +67,41 @@ def start_game(genre):
         
         while True:
             look_direction1 = input("Look to the left or to the right? (left/right): ") 
-            if look_direction1 == "Left" or look_direction1 == "left":
+            if look_direction1.lower() == "left":
                 scroll_text(horror_lines_main2)
                 break
-            elif look_direction1 == "Right" or look_direction1 == "right":  
+            elif look_direction1.lower() == "right":  
                 scroll_text(horror_lines_main3)
                 break
             else:
-                scroll_text("Invalid direction, please try again.")
+                scroll_text(invalid_choice)
 
         while True:
             look_direction2 = input("\nLook in the opposite direction? (y/n): ")
-            if look_direction2 == 'N' or look_direction2 == 'n':
+            if look_direction2.lower() == 'n':
                 break
-            elif look_direction2 == 'Y' or look_direction2 == 'y':
-                if look_direction1 == "Left" or look_direction1 == "left":
+            elif look_direction2.lower() == 'y':
+                if look_direction1.lower() == "left":
                     scroll_text(horror_lines_main3)
                     break
-                elif look_direction1 == "Right" or look_direction1 == "right":
+                elif look_direction1.lower() == "right":
                     scroll_text(horror_lines_main2)
                     break
+            else:
+                scroll_text(invalid_choice)
         # Choose correct story for player direction
         while True:
             go_direction = input("\nWhich direction do you go? (left/right): ")
 
             # Left Path Story
-            if go_direction == "Left" or go_direction == "left":
+            if go_direction.lower() == "left":
                 def horror_story_left():
-                    horror_left_lines1 = [
+                    horror_left_lines1 = [     # Lines if player takes left path
                         "\nYou begin walking down the road to the left.",
                         "As you walk past the houses that line the path,\n",
                         "you realize that every single house is completely identical to the last.",
                         '\n"None of this makes any sense, why would they build these houses here?"\n',
-                        "You think to yourself as you stop in front of one of the houses to get a closer look.",
+                        "You think to yourself as you stop in front of one of the houses to get a closer look\n",
                         "\nAs you scan your eyes across the strange structure, you notice the blinds rustle slightly.",
                         "The sidewalk is too far from the window to make out too many details.",
                         "You quickly power on your camera and look into the viewfinder.",
@@ -162,45 +153,113 @@ def start_game(genre):
                         "\nYou have escaped?"
                         "\nGame Over."
                     ]
-   
-                    horror_left_decision = input("\nWhat do you do? (take picture/run away): ")
-                    if horror_left_decision == "take picture":
-                        scroll_text(horror_left_lines2) 
-                    elif horror_left_decision == "run away":
-                        scroll_text(horror_left_lines3)
+                    while True:
+                        horror_left_decision = input("\nWhat do you do? (take picture/run away): ")
+                        if horror_left_decision.lower() == "take picture":
+                            scroll_text(horror_left_lines2)
+                            play_again_prompt()
+                            break 
+                        elif horror_left_decision.lower() == "run away":
+                            scroll_text(horror_left_lines3)
+                            play_again_prompt()
+                            break
+                        else:
+                            scroll_text(invalid_choice)
                 horror_story_left()
                 break
 
             # Right Path Story
-            elif go_direction == "Right" or go_direction == "right":
+            elif go_direction.lower() == "right":
                 def horror_story_right():
-                    horror_right_lines1 = [
-                        "You begin walking down the road to the right.",
+                    horror_right_lines1 = [         # Lines if player goes down right path
+                        "\nYou begin walking down the road to the right.",
                         "\nAs you walk further down the path, the forest on both sides of the road\n",
-                        "continue to get thicker and thicker, leaving only small slivers of moonlight\n",
+                        "continues to get thicker and thicker, leaving only small slivers of moonlight\n",
                         "to guide you forward.",
                         "\nEventually, you see that the path leads to more forest, with a smaller trail leading further\n",
                         "into the trees.",
                         "\nYou make it to the end of the road and begin walking down the trail further into the dark forest.",
-                        "You walk down the trail for "
+                        "You are feeling very uneasy from the overwhelming feeling of uncertainty as to what lies ahead.",
+                        "\nEventually, you begin to see a faint white fluorescent light flickering up ahead.",
+                        "As you get closer, you realize that the light is coming from a small shed in the middle of a clearing.",
+                        "\nYou approach the shed and notice that the door is wide open.",
+                        "There isn't much space inside; the only thing inside is a concrete floor with a trapdoor in the center."
                     ]
+                    scroll_text(horror_right_lines1)
+
+                    horror_right_lines2 = [         # Lines if player exits shed
+                        "\nYou decide that this place is too strange, and you turn around and begin walking back.",
+                        "\nYou only make it about 100 feet before you heard the galloping of a large animal in the trees.",
+                        "The sound gets closer and closer until a large creature bursts from the trees.",
+                        "It stands at about 8 feet tall.",
+                        "It looks like a mass of dead animal parts that has been sewn together to resemble a moose.",
+                        "The pieces of its body are tied together with oozing black tendrils.",
+                        "\nIt stares at you with empty sockets.",
+                        "\nYou start to back away, but it charges at you faster than any animal you've ever seen.",
+                        "It charges headfirst into your chest and skewers you with its antlers.",
+                        "\nThen the others come out to begin your transformation.",
+                        "\nGame Over."
+                    ]
+                    horror_right_lines3 = [        # Lines if player enters trapdoor
+                        "\nYou open the trap door which reveals a ladder leading down to some sort of basement.",
+                        "\nYou start climbing down the ladder, but as soon as you reach the ground, the trapdoor\n",
+                        "slams shut above you and a clicking sound can be heard.",
+                        "\nYou look around and see a wall of monitors showing security footage from different areas in the forest."
+                        "\nSuddenly, the sound of multiple stomping boots comes from around the corner.",
+                        "4 soldiers turn the corner, all of them wearning full kevlar armor and pointing\n",
+                        "an assault rifle in your direction.",
+                        '\n"Who are you? How did you get in here?"\n',
+                        "Yells one of the guards\n",
+                        '\n"It doesn\'t matter, we have to take care of him.',
+                        "Says another guard\n"
+                    ]
+                    horror_right_lines4 = [        # Lines if player resists soldiers
+                        "\nYou reach out and grab the barrel of one of the solder's gun.",
+                        "\nThe other soldiers react immediately and fire into you,",
+                        "killing you almost instantly.",
+                        "\nThey throw your body outside and sit and watch it from the security cameras.",
+                        "\nOnly a few moments later, a pack of mangled looking wolves with black ooze\n",
+                        "dripping from open wounds on their bodies pounce on your body and tear it apart.",
+                        "\nThey carry your body parts away to their leader."
+                        "\nGame Over."
+                    ]
+                    horror_right_lines5 = [        # Lines if player doesn't resist soldiers
+                        "\nYou close your eyes and accept your fate.",
+                        "\nYou consider crying out to reason with them, but before you get the chance,\n",
+                        "a solider approaches you and injects a syringe into your neck.",
+                        "\nYou awake the next morning in your bed.",
+                        "No matter how hard you try, you can't seem to remember what happened after you went down\n",
+                        "that trapdoor.",
+                        "\nYou have escaped.",
+                        "\nGame Over."
+                    ]
+                    while True:
+                        horror_right_decision1 = input("\nWhat do you do? (go back/enter trapdoor: )")
+                        if horror_right_decision1.lower() == "go back":
+                            scroll_text(horror_right_lines2)
+                            play_again_prompt()
+                            break
+                        elif horror_right_decision1.lower() == "enter trapdoor":
+                            scroll_text(horror_right_lines3)
+                            horror_right_decision2 = input("\nWhat do you do? (resist/accept): ")
+                            if horror_right_decision2.lower() == "resist":
+                                scroll_text(horror_right_lines4)
+                                play_again_prompt()
+                                break
+                            elif horror_right_decision2.lower() == "accept":
+                                scroll_text(horror_right_lines5)
+                                play_again_prompt()
+                                break
+                            else:
+                                scroll_text(invalid_choice)
+                        else:
+                            scroll_text(invalid_choice)
+
                 horror_story_right()
+                break
+            else:   # If player enters invalid path direction
+                scroll_text(invalid_choice)
 
-    # Run the appropriate genre-specific story
-    while True:
-        if genre == "Horror" or genre == "horror":
-            horror_story_main()
-            break
-        elif genre == "Mystery" or genre == "mystery":
-            pass    #mystery_story_main()
-            break
-        elif genre == "Zombie" or genre == "zombie":
-            pass    #zombie_story_main()
-            break
-        else:
-            print("Invalid genre selection. Please choose a valid genre.")
-            genre = input("Choose a genre for your adventure (horror | crime | zombie): ")
-
+    horror_story_main()
 # Start Game
-genre = input("Choose a genre for your adventure (horror | mystery | zombie): ")
-start_game(genre)
+start_game()
