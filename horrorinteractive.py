@@ -210,7 +210,7 @@ def start_game():
                         "slams shut above you and a clicking sound can be heard.",
                         "\nYou look around and see a wall of monitors showing security footage from different areas in the forest."
                         "\nSuddenly, the sound of multiple stomping boots comes from around the corner.",
-                        "4 soldiers turn the corner, all of them wearning heavy body armor and pointing\n",
+                        "4 soldiers turn the corner, all of them wearing heavy body armor and pointing\n",
                         "an assault rifle in your direction.",
                         '\n"Who are you? How did you get in here?"\n',
                         "-Yells one of the guards\n",
