@@ -1,6 +1,8 @@
-# Use for scrolling text
-import time
+# Used for scrolling text
 import sys
+from time import sleep
+# Used for clearing terminal
+from os import system
 
 # Scrolling text function
 def scroll_text(lines, delay=0.03):
@@ -10,19 +12,16 @@ def scroll_text(lines, delay=0.03):
         for char in line:
             sys.stdout.write(char)
             sys.stdout.flush()
-            time.sleep(delay)
+            sleep(delay)
 
 #   Message for invalid inputs
-invalid_choice = "\nInvalid choice, please try again."
-
-# Welcome message
-scroll_text("Welcome to Horror Interactive!\n")
-input("Press Enter to continue: ")
+invalid_choice = "\nInvalid choice, please try again.\n"
 
 # Option to replay game
 def play_again_prompt():
     replay_option = input("\nWould you like to play again? (y/n): ")
     if replay_option.lower() == "y":
+        system("cls")   # Clears terminal from previous game
         start_game()
     else:
         scroll_text("\nThanks for playing.")
@@ -35,12 +34,13 @@ def start_game():
     # Horror story main function
     def horror_story_main():
         while True:
-            player = input("Choose a name for your character: ")
+            player = input("\nChoose a name for your character: ")
             if player == '':
                 scroll_text("\nPlayer name cannot be blank.")
             else:
                 break
-            
+
+        # Introduction lines    
         horror_lines_main1 = [
             f"\nYou are {player}.",
             "\nYou live in Evergreen, a small town in Maine.",
@@ -68,6 +68,7 @@ def start_game():
             "The only light illuminating the path is the streaks of moonlight breaking through the canopy.",
             "You cannot tell where it leads, but a strange curiosity builds as the trees sway."]
         
+        # Prompts user to choose a direction
         while True:
             look_direction1 = input("Look to the left or to the right? (left/right): ") 
             if look_direction1.lower() == "left":
@@ -104,9 +105,9 @@ def start_game():
                         "As you walk past the houses that line the path,\n",
                         "you realize that every single house is completely identical to the last.",
                         '\n"None of this makes any sense, why would they build these houses here?"\n',
-                        "You think to yourself as you stop in front of one of the houses to get a closer look\n",
+                        "-You think to yourself as you stop in front of one of the houses to get a closer look.\n",
                         "\nAs you scan your eyes across the strange structure, you notice the blinds rustle slightly.",
-                        "The sidewalk is too far from the window to make out too many details.",
+                        "The sidewalk is too far from the window to make out many details.",
                         "You quickly power on your camera and look into the viewfinder.",
                         "You zoom into the window where you can see the blinds being bent back.",
                         "\nThe only thing you can make out is a bony finger poking through the gap."
@@ -159,11 +160,11 @@ def start_game():
                     while True:
                         horror_left_decision = input("\nWhat do you do? (take picture/run away): ")
                         if horror_left_decision.lower() == "take picture":
-                            scroll_text(horror_left_lines2)
+                            scroll_text(horror_left_lines2, 0.06)
                             play_again_prompt()
                             break 
                         elif horror_left_decision.lower() == "run away":
-                            scroll_text(horror_left_lines3)
+                            scroll_text(horror_left_lines3, 0.06)
                             play_again_prompt()
                             break
                         else:
@@ -186,7 +187,7 @@ def start_game():
                         "\nEventually, you begin to see a faint white fluorescent light flickering up ahead.",
                         "As you get closer, you realize that the light is coming from a small shed in the middle of a clearing.",
                         "\nYou approach the shed and notice that the door is wide open.",
-                        "There isn't much space inside; the only thing inside is a concrete floor with a trapdoor in the center."
+                        "There isn't much space inside; the only thing you can see inside is a concrete floor with a trapdoor in the center."
                     ]
                     scroll_text(horror_right_lines1)
 
@@ -209,18 +210,19 @@ def start_game():
                         "slams shut above you and a clicking sound can be heard.",
                         "\nYou look around and see a wall of monitors showing security footage from different areas in the forest."
                         "\nSuddenly, the sound of multiple stomping boots comes from around the corner.",
-                        "4 soldiers turn the corner, all of them wearning full kevlar armor and pointing\n",
+                        "4 soldiers turn the corner, all of them wearning heavy body armor and pointing\n",
                         "an assault rifle in your direction.",
                         '\n"Who are you? How did you get in here?"\n',
-                        "Yells one of the guards\n",
-                        '\n"It doesn\'t matter, we have to take care of him.',
-                        "Says another guard\n"
+                        "-Yells one of the guards\n",
+                        '\n"It doesn\'t matter, we have to take care of him."\n',
+                        "-Says another guard\n"
                     ]
                     horror_right_lines4 = [        # Lines if player resists soldiers
-                        "\nYou reach out and grab the barrel of one of the solder's gun.",
-                        "\nThe other soldiers react immediately and fire into you,",
+                        "\nYou reach out and grab the barrel of one of the soldier's guns.",
+                        "\nThe other soldiers react immediately and fire into you,\n",
                         "killing you almost instantly.",
-                        "\nThey throw your body outside and sit and watch it from the security cameras.",
+                        "\nThey drag your body outside to the middle of the road just outside the shed.\n",
+                        "The soldiers shuffle anxiously back down the trapdoor and sit in front of the monitors.\n",
                         "\nOnly a few moments later, a pack of mangled looking wolves with black ooze\n",
                         "dripping from open wounds on their bodies pounce on your body and tear it apart.",
                         "\nThey carry your body parts away to their leader."
@@ -237,20 +239,20 @@ def start_game():
                         "\nGame Over."
                     ]
                     while True:
-                        horror_right_decision1 = input("\nWhat do you do? (go back/enter trapdoor: )")
+                        horror_right_decision1 = input("\nWhat do you do? (go back/enter trapdoor): ")
                         if horror_right_decision1.lower() == "go back":
-                            scroll_text(horror_right_lines2)
+                            scroll_text(horror_right_lines2, 0.06)
                             play_again_prompt()
                             break
                         elif horror_right_decision1.lower() == "enter trapdoor":
                             scroll_text(horror_right_lines3)
                             horror_right_decision2 = input("\nWhat do you do? (resist/accept): ")
                             if horror_right_decision2.lower() == "resist":
-                                scroll_text(horror_right_lines4)
+                                scroll_text(horror_right_lines4, 0.06)
                                 play_again_prompt()
                                 break
                             elif horror_right_decision2.lower() == "accept":
-                                scroll_text(horror_right_lines5)
+                                scroll_text(horror_right_lines5, 0.06)
                                 play_again_prompt()
                                 break
                             else:
@@ -264,5 +266,14 @@ def start_game():
                 scroll_text(invalid_choice)
 
     horror_story_main()
-# Start Game
-start_game()
+
+def main():
+    # Welcome message
+    scroll_text("Welcome to Horror Interactive!\n")
+    input("Press Enter to continue: ")
+
+    # Start Game
+    start_game()
+
+if __name__ == "__main__":
+    main()
