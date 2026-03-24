@@ -1,5 +1,5 @@
 # Used for scrolling text
-import sys
+from sys import stdout
 from time import sleep
 # Used for clearing terminal
 from os import system
@@ -10,8 +10,6 @@ def scroll_text(lines, delay=0.03):
         if line.endswith('.'):
             line = line + '\n'
         for char in line:
-            sys.stdout.write(char)
-            sys.stdout.flush()
             sleep(delay)
 
 #   Message for invalid inputs
@@ -19,8 +17,8 @@ invalid_choice = "\nInvalid choice, please try again.\n"
 
 # Option to replay game
 def play_again_prompt():
-    replay_option = input("\nWould you like to play again? (y/n): ")
-    if replay_option.lower() == "y":
+    replay_option = input("\nWould you like to play again? (y/n): ").lower()
+    if replay_option == "y":
         system("cls")   # Clears terminal from previous game
         start_game()
     else:
@@ -35,7 +33,7 @@ def start_game():
     def horror_story_main():
         while True:
             player = input("\nChoose a name for your character: ")
-            if player == '':
+            if not player:
                 scroll_text("\nPlayer name cannot be blank.")
             else:
                 break
